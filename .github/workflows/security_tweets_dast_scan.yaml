@@ -3,14 +3,10 @@ name: allengayCx Security Tweets
 # Controls when the workflow will run
 on:
   pull_request:
-  #  types: [opened, reopened, synchronize]
     branches: 
       - main
-  #push: 
-  #    branches:
-  #    - main
-  workflow_dispatch: # *** this adds a run button ***
-
+  workflow_dispatch: 
+  
 permissions:
   contents: read
 

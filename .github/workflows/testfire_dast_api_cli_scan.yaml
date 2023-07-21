@@ -34,7 +34,7 @@ jobs:
         config: './testfire_api.yaml'
         base_url: "https://eu.ast.checkmarx.net"
         environment_id: "d7d10ea9-cf6d-494f-a90e-7cfbc185cf93"
-        openapi: "./testfire_openapi.yaml"
+        openapi: "./testfire_openapi.json"
         project_id: ""
         fail_on: "HIGH"
         verbose: true

@@ -75,9 +75,9 @@ jobs:
     name: "activeScan"
     type: "activeScan"
   - parameters:
-      template: "risk-confidence-html"
+      template: "traditional-pdf"
       reportDir: "./output"
       reportTitle: "ZAP Scanning Report"
       reportDescription: ""
-    name: "report"
+    name: "report-pdf"
     type: "report"

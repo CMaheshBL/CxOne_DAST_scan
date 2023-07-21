@@ -1,4 +1,4 @@
-name: TestFire DAST Scan Test CLI
+name: TestFire DAST API Scan Test CLI
 
 # Controls when the workflow will run
 on:

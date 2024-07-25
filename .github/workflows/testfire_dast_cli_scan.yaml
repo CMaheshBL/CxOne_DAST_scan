@@ -24,7 +24,7 @@ jobs:
         with:
           command: web
           config: "./testfire-web.yaml"
-          environment_id: b59c73a9-a85b-484d-b3bb-8c8cf902f177
+          environment_id: 600021d4-b04c-4a6a-9ec8-f40fe652f3a6
           fail_on: "HIGH"
           log_level: info
           base_url: https://eu.ast.checkmarx.net/

@@ -1,53 +1,42 @@
 name: TestFire DAST Scan Test CLI
 
-# Controls when the workflow will run
 on:
   pull_request:
-    branches: 
+    branches:
       - main
-  workflow_dispatch: 
-  
-permissions:
-  contents: read
+  workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    permissions:
-      contents: read # for actions/checkout to fetch code
-      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif
-    # The type of runner that the job will run on
+  dast:
     runs-on: ubuntu-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    name: DAST on Prem Testing Action
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v3
-    # Create Output Folder
-    - name: Create Output folder
-      run: mkdir ${{ github.workspace }}/output_folder
-    - name: Change dir owner
-      run: sudo chown -R 1000:1000 ${{ github.workspace }}
-    # Scan
-    - name: Checkmarx DAST Github Action
-      uses: Checkmarx/dast-github-action@v1.0.6
-      env:
-        CX_APIKEY: ${{ secrets.CX_APIKEY }}
-      with:
-        command: web
-        config: ./testfire-web.yaml
-        base_url: https://eu.ast.checkmarx.net/
-        environment_id: b59c73a9-a85b-484d-b3bb-8c8cf902f177
-        fail_on: HIGH
-        verbose: true
-        output: ${{ github.workspace }}/output_folder
-    - name: Reclaim output directory  
-      if: always()  
-      run: sudo chown -R 1001:1001 ${{ github.workspace }}/output
-    - uses: actions/upload-artifact@v3
-      if: always()
-      name: Upload Logs
-      with:
-        name: report
-        path: ${{ github.workspace }}/output_folder
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Create Output folder
+        run: mkdir ${{ github.workspace }}/output_fold
+      - name: Change dir owner
+        run: sudo chown -R 1000:1000 ${{ github.workspace }}
+      - name: Checkmarx DAST Github Action
+        uses: Checkmarx/dast-github-action@v1.0.6
+        env:
+          CX_APIKEY: ${{ secrets.AST_API_KEY }}
+        with:
+          command: web
+          config: "./testfire-web.yaml"
+          environment_id: b59c73a9-a85b-484d-b3bb-8c8cf902f177
+          fail_on: "HIGH"
+          log_level: info
+          base_url: https://eu.ast.checkmarx.net/
+          verbose: true
+          timeout: 100000
+          output: ${{ github.workspace }}/output_fold
+      - name: Change dir owner back to gh user
+        if: always()
+        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold  
+      - uses: actions/upload-artifact@v3
+        if: always()
+        name: Upload Logs
+        with:
+          name: report
+          path: ${{ github.workspace }}/output_fold
